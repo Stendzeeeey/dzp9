@@ -1,0 +1,42 @@
+Разработать приложение «Календарь», которое выводит на экран календарь на указанный месяц заданного года. 
+Основное окно программы должно содержать заголовок приложения, текстовое поле для ввода года, 
+список для выбора месяца и кнопку «Просмотреть», 
+при нажатии на которую должен в отдельном окне выводится календарь на заданный месяц (либо в горизонтальном, либо в вертикальном расположении)
+
+import calendar
+import tkinter as tk
+from tkinter import ttk
+
+class CalendarApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Календарь")
+        self.geometry("300x200")
+
+        # для ввода года
+        self.year_entry = tk.Entry(self)
+        self.year_entry.pack(pady=10)
+
+        # для выбора месяца
+        self.month_combo = ttk.Combobox(self, values=list(calendar.month_name)[1:])
+        self.month_combo.current(0)
+        self.month_combo.pack(pady=10)
+
+        # кнопка для просмотра календаря
+        self.view_button = tk.Button(self, text="Просмотреть", command=self.view_calendar)
+        self.view_button.pack(pady=10)
+
+    def view_calendar(self):
+        # год и месяц 
+        year = int(self.year_entry.get())
+        month = self.month_combo.current() + 1
+
+        # календарь на заданный месяц, выводим его в отдельном окне
+        calendar_text = calendar.month(year, month)
+        calendar_window = tk.Toplevel(self)
+        calendar_label = tk.Label(calendar_window, text=calendar_text, font=("Courier", 12))
+        calendar_label.pack(padx=10, pady=10)
+
+if __name__ == "__main__":
+    app = CalendarApp()
+    app.mainloop()
